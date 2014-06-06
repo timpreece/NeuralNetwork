@@ -16,6 +16,7 @@ namespace NeuralNetwork
 				base.Add( new Neuron() );
 			}
 		}
+		/// blah
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NeuralNetwork.Layer"/> class.
