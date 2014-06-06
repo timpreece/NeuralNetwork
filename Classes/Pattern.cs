@@ -10,28 +10,30 @@ namespace NeuralNetwork
 	public class Pattern
 	{
 		private double[] _inputs;
-		private double _output;
+		private double[] _outputs;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NeuralNetwork.Pattern"/> class.
 		/// </summary>
 		/// <param name="value">Value.</param>
 		/// <param name="inputSize">Input size.</param>
-		public Pattern (string value, int inputSize)
+		/// <param name="outputSize">Output size.</param>
+		public Pattern (string value, int inputSize, int outputSize)
 		{
 			string[] line = value.Split (',');
-			if (line.Length - 1 != inputSize) {
+			if (line.Length != inputSize+outputSize) {
 				throw new Exception ("Input does not match network configuration.");
 			}
 
 			_inputs = new double[inputSize];
-
 			for (int i = 0; i < inputSize; i++) {
 				_inputs [i] = double.Parse (line[i]);
 			}
 
-			_output = double.Parse(line[inputSize]); // last number is output
-
+			_outputs = new double[outputSize];
+			for (int i = 0; i < outputSize; i++) {
+				_outputs [i] = double.Parse (line[i + inputSize]);
+			}
 		}
 
 		/// <summary>
@@ -44,12 +46,12 @@ namespace NeuralNetwork
 		}
 
 		/// <summary>
-		/// Gets the output.
+		/// Gets the outputs.
 		/// </summary>
-		/// <value>The output.</value>
-		public double Output
+		/// <value>The outputs.</value>
+		public double[] Outputs
 		{
-			get { return _output; }
+			get { return _outputs; }
 		}
 
 	}

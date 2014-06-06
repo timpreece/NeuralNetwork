@@ -11,7 +11,7 @@ namespace NeuralNetwork
 		private double _error; 						// sum of error
 		private double _output = double.MinValue;	// output value
 		private double _lrate = 0.5;				// learning rate
-		private double _lambda = 6;					// steepness of sigmoid curve
+		private double _lambda = 5;					// steepness of sigmoid curve
 		private List<Weight> _weights; 				// list of weights connected to inputs
 
 		/// <summary>
@@ -44,8 +44,23 @@ namespace NeuralNetwork
 		public void Activate()
 		{
 			_input = 0;
+			_error = 0;
 			foreach (Weight w in _weights) {
 				_input += w.Value * w.Input.Output;
+			}
+		}
+
+		/// <summary>
+		/// Collects the error.
+		/// </summary>
+		/// <param name="delta">Delta.</param>
+		public void CollectError( double delta )
+		{
+			if (_weights != null) {
+				_error += delta;
+				foreach (Weight w in _weights) {
+					w.Input.CollectError (_error * w.Value);
+				}
 			}
 		}
 
@@ -54,26 +69,23 @@ namespace NeuralNetwork
 		/// </summary>
 		/// <returns>The feedback.</returns>
 		/// <param name="input">Input.</param>
-		public double ErrorFeedback (Neuron input)
+		/*public double ErrorFeedback (Neuron input)
 		{
 			Weight w = _weights.Find (delegate(Weight t) {
 				return t.Input == input;
 			});
 			return _error * Derivative * w.Value;
-		}
+		}*/
 
 		/// <summary>
 		/// Adjusts the weights.
 		/// </summary>
-		/// <param name="value">Value.</param>
-		public void AdjustWeights( double value )
+		public void AdjustWeights()
 		{
-			_error = value;
-			double temp = _error * Derivative * _lrate;
 			for (int i = 0; i < _weights.Count; i++) {
-				_weights [i].Value +=  temp * _weights [i].Input.Output;
+				_weights [i].Value +=  _error * Derivative * _lrate * _weights [i].Input.Output;
 			}
-			_bias += temp;
+			_bias += _error * Derivative * _lrate;
 		}
 
 		/// <summary>

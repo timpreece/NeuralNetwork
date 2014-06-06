@@ -8,12 +8,16 @@ namespace NeuralNetwork
 	{
 		public static void Main (string[] args)
 		{
-			Network _network = new Network (2,2,1, new Random ());
+			// create network
+			int[] dimensions = { 3, 9, 1 };
+			string filename = "patterns.csv";
+			Network net = new Network ( dimensions, filename);
 
-			_network.LoadTrainingPatterns ();
-			_network.Initialise ();
-			_network.Train ();
-			_network.Test ();
+			// present training patterns and continue until error is reduced
+			net.Train ();
+
+			// re-test against training patters
+			net.Test ();
 		}
 	}
 }
