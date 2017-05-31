@@ -1,3 +1,3 @@
 NeuralNetwork
 =============
-Experiments with neural network code
+Experiments with neural network code in C#
